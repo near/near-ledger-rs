@@ -48,20 +48,13 @@ pub fn tx_template(
     }
 }
 
-/// `ed25519_dalek` pub key is just used as material for seed (for tests/examples)
-/// so that the same `near_crypto::KeyType::SECP256K1` is obtained from the same `ed25519_dalek::VerifyingKey`;
-///
-/// other than this purpose, the conversion has no meaning
-fn derive_secp256k1_public_key(public_key: &ed25519_dalek::VerifyingKey) -> near_crypto::PublicKey {
-    let sk = SecretKey::from_seed(
-        near_crypto::KeyType::SECP256K1,
-        &format!("{:?}", public_key),
-    );
-    sk.public_key()
+fn get_static_secp256k1_public_key(public_key: &ed25519_dalek::VerifyingKey) -> near_crypto::PublicKey {
+    near_crypto::PublicKey::from_str("secp256k1:2xV3hzGShUE3X5jE9jmAyFC67GfgwAUo5FoBJ79Zh84Z5Ubdxy94Ka73EWwrFg5FbVYAvtdqJK77P6CAdyMkEnca").expect("no parse err")
 }
 
+// #region
 #[allow(deprecated)]
-pub fn batch_of_all_types_of_actions(
+pub fn batch_of_all_types_of_actions_v1(
     ledger_pub_key: ed25519_dalek::VerifyingKey,
 ) -> Vec<near_primitives::transaction::Action> {
     let create_account = near_primitives::transaction::Action::CreateAccount(
@@ -76,11 +69,11 @@ pub fn batch_of_all_types_of_actions(
     );
 
     let delete_key_ed25519 = {
-        let sk = SecretKey::from_seed(
-            near_crypto::KeyType::ED25519,
-            &format!("{:?}", ledger_pub_key),
-        );
-        let public_key_ed = sk.public_key();
+        // TODO #C: extract as a method of get_static_ed25519_public_key
+        let public_key_ed = near_crypto::PublicKey::from_str(
+            "ed25519:AVHQN9NRrHGeagz7RiVEUyhB9aiSGZCJbXKbJbW8z63E",
+        )
+        .expect("no parse err");
         near_primitives::transaction::Action::DeleteKey(Box::new(
             near_primitives::transaction::DeleteKeyAction {
                 public_key: public_key_ed,
@@ -90,20 +83,20 @@ pub fn batch_of_all_types_of_actions(
 
     let delete_key_secp256k1 = near_primitives::transaction::Action::DeleteKey(Box::new(
         near_primitives::transaction::DeleteKeyAction {
-            public_key: derive_secp256k1_public_key(&ledger_pub_key),
+            public_key: get_static_secp256k1_public_key(&ledger_pub_key),
         },
     ));
 
     let stake = near_primitives::transaction::Action::Stake(Box::new(
         near_primitives::transaction::StakeAction {
             stake: 1157130000000000000000000, // 1.15713 NEAR,
-            public_key: derive_secp256k1_public_key(&ledger_pub_key),
+            public_key: get_static_secp256k1_public_key(&ledger_pub_key),
         },
     ));
 
     let add_key_fullaccess = near_primitives::transaction::Action::AddKey(Box::new(
         near_primitives::transaction::AddKeyAction {
-            public_key: derive_secp256k1_public_key(&ledger_pub_key),
+            public_key: get_static_secp256k1_public_key(&ledger_pub_key),
             access_key: near_primitives_core::account::AccessKey {
                 nonce: 127127127127,
                 permission: near_primitives_core::account::AccessKeyPermission::FullAccess,
@@ -137,7 +130,7 @@ pub fn batch_of_all_types_of_actions(
         };
         near_primitives::transaction::Action::AddKey(Box::new(
             near_primitives::transaction::AddKeyAction {
-                public_key: derive_secp256k1_public_key(&ledger_pub_key),
+                public_key: get_static_secp256k1_public_key(&ledger_pub_key),
                 access_key: near_primitives_core::account::AccessKey {
                     nonce: 127127127127,
                     permission: near_primitives_core::account::AccessKeyPermission::FunctionCall(
@@ -217,6 +210,7 @@ pub fn batch_of_all_types_of_actions(
         function_call_binary_args_after_parse_error,
     ]
 }
+// #endregion
 
 pub fn serialize_and_display_tx(transaction: near_primitives::transaction::Transaction) -> Vec<u8> {
     log::info!("---");

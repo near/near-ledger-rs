@@ -112,6 +112,11 @@ RUST_LOG=near_ledger=info cargo run --example sign_transfer  -- --speculos-test-
 
 ```bash
 export RUST_LOG=near_ledger=info
+# doing 
+# export RUST_LOG=info 
+# or 
+# export RUST_LOG=near_ledger=info,sign_create_account=info
+# will print additional info about public key/transaction 
 cargo run --example sign_create_account
 cargo run --example sign_create_account  -- --speculos-test-generate
 cargo run --example sign_delete_account_short
@@ -145,6 +150,7 @@ cargo run --example sign_functioncall_str_parse_err -- --speculos-test-generate
 cargo run --example sign_batch_all_actions
 cargo run --example sign_batch_all_actions  -- --speculos-test-generate
 ```
+<!-- TODO: rename sign_batch_all_actions -> sign_batch_all_actions_v1 -->
 
 ### Sign a NEP-413 message
 
@@ -155,6 +161,7 @@ RUST_LOG=near_ledger=info cargo run --example sign_nep_413_message  -- --speculo
 
 ### Sign a NEP-366 delegate action
 
+<!-- TODO: rename sign_nep_366_delegate_action -> sign_nep_366_delegate_action_batch_all_sub_actions_v1 -->
 ```bash
 RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action
 RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action  -- --speculos-test-generate

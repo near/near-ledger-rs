@@ -6,6 +6,7 @@ mod common;
 
 fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transaction::Transaction {
     let mut tx = common::tx_template(ledger_pub_key);
+    // TODO #C: replace with get_static_secp256k1_key
     let sk = SecretKey::from_seed(
         near_crypto::KeyType::SECP256K1,
         &format!("{:?}", ledger_pub_key),
@@ -21,7 +22,7 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
 }
 
 fn main() -> Result<(), NEARLedgerError> {
-    // TODO: add actual obtained signature from speculos test somewhere in https://github.com/LedgerHQ/app-near/tree/develop/tests
+    // FIX: add actual obtained signature from speculos test somewhere in https://github.com/LedgerHQ/app-near/tree/develop/tests
     // on a per-actual-need basis
     let result_signature_from_speculos_test = hex::decode("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap();
 

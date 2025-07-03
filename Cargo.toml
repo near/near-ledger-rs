@@ -91,6 +91,7 @@ path = "examples/sign_transaction/functioncall_bin.rs"
 name = "sign_functioncall_str_parse_err"
 path = "examples/sign_transaction/functioncall_str_parse_err.rs"
 
+# TODO: rename sign_batch_all_actions -> sign_batch_all_actions_v1
 [[example]]
 name = "sign_batch_all_actions"
 path = "examples/sign_transaction/batch_all_actions.rs"
@@ -99,6 +100,7 @@ path = "examples/sign_transaction/batch_all_actions.rs"
 name = "sign_nep_413_message"
 path = "examples/sign_nep_413_message.rs"
 
+# TODO: rename sign_nep_366_delegate_action -> sign_nep_366_delegate_action_batch_all_sub_actions_v1
 [[example]]
 name = "sign_nep_366_delegate_action"
 path = "examples/sign_nep_366_delegate_action.rs"

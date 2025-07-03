@@ -17,8 +17,10 @@ fn main() -> Result<(), NEARLedgerError> {
     env_logger::builder().init();
     let args = ExampleArgs::parse();
 
-    // TODO: add actual obtained signature from speculos test somewhere in https://github.com/LedgerHQ/app-near/tree/develop/tests
+    // TODO #A: add actual obtained signature from speculos test somewhere in https://github.com/LedgerHQ/app-near/tree/develop/tests
     // on a per-actual-need basis
+    // TODO #B0: run it with live device
+    // TODO #B1: run it with --speculos-test-generate flag
     let result_signature_from_speculos_test = hex::decode("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap();
 
     let maybe_static_test_case = if args.speculos_test_generate {
@@ -40,7 +42,7 @@ fn main() -> Result<(), NEARLedgerError> {
 
     let sender_id = AccountId::from_str("bob.near").unwrap();
 
-    let actions = common::batch_of_all_types_of_actions(ledger_pub_key)
+    let actions = common::batch_of_all_types_of_actions_v1(ledger_pub_key)
         .into_iter()
         .map(|action| action.try_into().unwrap())
         .collect::<Vec<_>>();
