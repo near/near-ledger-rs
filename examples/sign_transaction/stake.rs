@@ -1,4 +1,3 @@
-use near_crypto::SecretKey;
 use near_ledger::NEARLedgerError;
 
 #[path = "../common/lib.rs"]
@@ -6,12 +5,7 @@ mod common;
 
 fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transaction::Transaction {
     let mut tx = common::tx_template(ledger_pub_key);
-    // TODO #C: replace with get_static_secp256k1_key
-    let sk = SecretKey::from_seed(
-        near_crypto::KeyType::SECP256K1,
-        &format!("{:?}", ledger_pub_key),
-    );
-    let public_key = sk.public_key();
+    let public_key = common::get_static_secp256k1_public_key();
     tx.actions = vec![near_primitives::transaction::Action::Stake(Box::new(
         near_primitives::transaction::StakeAction {
             stake: 1157130000000000000000000, // 1.15713 NEAR,

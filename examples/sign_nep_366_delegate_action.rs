@@ -17,11 +17,7 @@ fn main() -> Result<(), NEARLedgerError> {
     env_logger::builder().init();
     let args = ExampleArgs::parse();
 
-    // TODO #A: add actual obtained signature from speculos test somewhere in https://github.com/LedgerHQ/app-near/tree/develop/tests
-    // on a per-actual-need basis
-    // TODO #B0: run it with live device
-    // TODO #B1: run it with --speculos-test-generate flag
-    let result_signature_from_speculos_test = hex::decode("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap();
+    let result_signature_from_speculos_test = hex::decode("3f671b1d2ba42132e78c39dad35848ef0ee67858d85bd63cb1ce9e03d629c74cec9529add083aa0de6dbd45d372baa67bd8f8e49e76297a87cec1dc7084ae80d").unwrap();
 
     let maybe_static_test_case = if args.speculos_test_generate {
         Some(StaticTestCase {
