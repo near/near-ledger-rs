@@ -151,9 +151,10 @@ cargo run --example sign_batch_all_actions_v1
 cargo run --example sign_batch_all_actions_v1  -- --speculos-test-generate
 cargo run --example sign_deploy_contract_as_global_hash
 cargo run --example sign_deploy_contract_as_global_hash  -- --speculos-test-generate
+cargo run --example sign_deploy_contract_as_global_account_id
+cargo run --example sign_deploy_contract_as_global_account_id  -- --speculos-test-generate
 ```
 
-<!-- TODO #A: add deploy_contract_as_global_account_id -->
 
 <!-- TODO #A: add deploy_contract_use_global_hash -->
 
