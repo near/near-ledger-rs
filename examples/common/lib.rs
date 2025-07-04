@@ -218,6 +218,9 @@ pub fn serialize_and_display_tx(transaction: near_primitives::transaction::Trans
     let bytes =
         borsh::to_vec(&transaction).expect("Transaction is not expected to fail on serialization");
     log::info!("transaction byte array length: {}", bytes.len());
+    let block_hash_bytes = borsh::to_vec(transaction.block_hash()).expect("no ser error");
+    log::info!("block hash byte array: {:x?}", block_hash_bytes);
+    log::info!("transaction byte array: {:x?}", bytes);
     log::info!("---");
     bytes
 }
