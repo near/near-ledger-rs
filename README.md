@@ -147,10 +147,9 @@ cargo run --example sign_functioncall_bin
 cargo run --example sign_functioncall_bin  -- --speculos-test-generate
 cargo run --example sign_functioncall_str_parse_err
 cargo run --example sign_functioncall_str_parse_err -- --speculos-test-generate
-cargo run --example sign_batch_all_actions
-cargo run --example sign_batch_all_actions  -- --speculos-test-generate
+cargo run --example sign_batch_all_actions_v1
+cargo run --example sign_batch_all_actions_v1  -- --speculos-test-generate
 ```
-<!-- TODO: rename sign_batch_all_actions -> sign_batch_all_actions_v1 -->
 
 ### Sign a NEP-413 message
 
