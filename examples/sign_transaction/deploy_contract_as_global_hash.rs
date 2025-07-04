@@ -1,5 +1,4 @@
 use near_ledger::NEARLedgerError;
-use near_primitives::transaction::DeployContractAction;
 use near_primitives_core::hash::CryptoHash;
 
 #[path = "../common/lib.rs"]
@@ -12,17 +11,19 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
 
     let code_hash = CryptoHash::hash_bytes(&code);
     log::info!("Contract code hash: {:?}", code_hash);
-    let action = near_primitives::transaction::Action::DeployContract(
-        DeployContractAction { code },
-    );
+    let action = near_primitives::transaction::Action::DeployGlobalContract(near_primitives::action::DeployGlobalContractAction {
+        code: std::sync::Arc::from(code),
+        deploy_mode: near_primitives::action::GlobalContractDeployMode::CodeHash,
+        
+    });
     log::warn!("action bytes: {:x?}", borsh::to_vec(&action).expect("no ser err"));
     tx.actions = vec![action];
     near_primitives::transaction::Transaction::V0(tx)
 }
 
 fn main() -> Result<(), NEARLedgerError> {
-    // FIX: add actual obtained signature from speculos test somewhere in https://github.com/LedgerHQ/app-near/tree/develop/tests
-    // on a per-actual-need basis
+    // TODO #F: replace with actual signature from test after test passes and stops
+    // resulting in `TxParsingFail = 0xB005`
     let result_signature_from_speculos_test = hex::decode("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap();
 
     common::get_key_sign_and_verify_flow_with_cli_parse(tx, result_signature_from_speculos_test)
