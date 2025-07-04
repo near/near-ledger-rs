@@ -104,7 +104,9 @@ name = "sign_deploy_contract_as_global_account_id"
 path = "examples/sign_transaction/deploy_contract_as_global_account_id.rs"
 
 
-# TODO #A: add deploy_contract_use_global_hash
+[[example]]
+name = "sign_deploy_contract_use_global_hash"
+path = "examples/sign_transaction/sign_deploy_contract_use_global_hash.rs"
 
 # TODO #A: add deploy_contract_use_global_hash
 
