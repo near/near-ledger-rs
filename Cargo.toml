@@ -99,10 +99,9 @@ path = "examples/sign_transaction/batch_all_actions_v1.rs"
 name = "sign_nep_413_message"
 path = "examples/sign_nep_413_message.rs"
 
-# TODO: rename sign_nep_366_delegate_action -> sign_nep_366_delegate_action_batch_all_sub_actions_v1
 [[example]]
-name = "sign_nep_366_delegate_action"
-path = "examples/sign_nep_366_delegate_action.rs"
+name = "sign_nep_366_delegate_action_batch_all_sub_actions_v1"
+path = "examples/sign_nep_366_delegate_action_batch_all_sub_actions_v1.rs"
 
 [[example]]
 name = "sign_nep_366_delegate_action_simple"

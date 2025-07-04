@@ -160,10 +160,9 @@ RUST_LOG=near_ledger=info cargo run --example sign_nep_413_message  -- --speculo
 
 ### Sign a NEP-366 delegate action
 
-<!-- TODO: rename sign_nep_366_delegate_action -> sign_nep_366_delegate_action_batch_all_sub_actions_v1 -->
 ```bash
-RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action
-RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action  -- --speculos-test-generate
+RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v1
+RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v1  -- --speculos-test-generate
 RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_simple
 RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_simple  -- --speculos-test-generate
 ```
