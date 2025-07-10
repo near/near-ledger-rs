@@ -149,6 +149,8 @@ cargo run --example sign_functioncall_str_parse_err
 cargo run --example sign_functioncall_str_parse_err -- --speculos-test-generate
 cargo run --example sign_batch_all_actions_v1
 cargo run --example sign_batch_all_actions_v1  -- --speculos-test-generate
+cargo run --example sign_batch_all_actions_v2
+cargo run --example sign_batch_all_actions_v2  -- --speculos-test-generate
 cargo run --example sign_deploy_contract_as_global_hash
 cargo run --example sign_deploy_contract_as_global_hash  -- --speculos-test-generate
 cargo run --example sign_deploy_contract_as_global_account_id
@@ -158,7 +160,6 @@ cargo run --example sign_deploy_contract_use_global_hash  -- --speculos-test-gen
 cargo run --example sign_deploy_contract_use_global_account_id
 cargo run --example sign_deploy_contract_use_global_account_id  -- --speculos-test-generate
 ```
-<!-- TODO #B: add sign_batch_all_actions_v2 example -->
 
 ### Sign a NEP-413 message
 
@@ -175,7 +176,7 @@ RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_batch
 RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_simple
 RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_simple  -- --speculos-test-generate
 ```
-<!-- TODO #C: add sign_batch_all_actions_v2 example -->
+<!-- TODO #C: add sign_nep_366_delegate_action_batch_all_sub_actions_v1 example -->
 
 ### Open near app
 

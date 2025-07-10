@@ -96,6 +96,11 @@ name = "sign_batch_all_actions_v1"
 path = "examples/sign_transaction/batch_all_actions_v1.rs"
 
 [[example]]
+name = "sign_batch_all_actions_v2"
+path = "examples/sign_transaction/batch_all_actions_v2.rs"
+
+
+[[example]]
 name = "sign_deploy_contract_as_global_hash"
 path = "examples/sign_transaction/deploy_contract_as_global_hash.rs"
 
@@ -120,6 +125,8 @@ path = "examples/sign_nep_413_message.rs"
 [[example]]
 name = "sign_nep_366_delegate_action_batch_all_sub_actions_v1"
 path = "examples/sign_nep_366_delegate_action_batch_all_sub_actions_v1.rs"
+
+# TODO #B: add sign_nep_366_delegate_action_batch_all_sub_actions_v2 
 
 [[example]]
 name = "sign_nep_366_delegate_action_simple"
