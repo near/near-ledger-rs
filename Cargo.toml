@@ -124,13 +124,13 @@ path = "examples/sign_nep_413_message.rs"
 
 [[example]]
 name = "sign_nep_366_delegate_action_batch_all_sub_actions_v1"
-path = "examples/sign_nep_366_delegate_action_batch_all_sub_actions_v1.rs"
+path = "examples/sign_nep_366/delegate_action_batch_all_sub_actions_v1.rs"
 
 # TODO #B: add sign_nep_366_delegate_action_batch_all_sub_actions_v2 
 
 [[example]]
 name = "sign_nep_366_delegate_action_simple"
-path = "examples/sign_nep_366_delegate_action_simple.rs"
+path = "examples/sign_nep_366/delegate_action_simple.rs"
 
 [dependencies]
 ed25519-dalek = { version = "2", default-features = false }

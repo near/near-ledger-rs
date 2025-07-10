@@ -164,17 +164,19 @@ cargo run --example sign_deploy_contract_use_global_account_id  -- --speculos-te
 ### Sign a NEP-413 message
 
 ```bash
-RUST_LOG=near_ledger=info cargo run --example sign_nep_413_message
-RUST_LOG=near_ledger=info cargo run --example sign_nep_413_message  -- --speculos-test-generate
+export RUST_LOG=near_ledger=info
+cargo run --example sign_nep_413_message
+cargo run --example sign_nep_413_message  -- --speculos-test-generate
 ```
 
 ### Sign a NEP-366 delegate action
 
 ```bash
-RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v1
-RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v1  -- --speculos-test-generate
-RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_simple
-RUST_LOG=near_ledger=info cargo run --example sign_nep_366_delegate_action_simple  -- --speculos-test-generate
+export RUST_LOG=near_ledger=info
+cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v1
+cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v1  -- --speculos-test-generate
+cargo run --example sign_nep_366_delegate_action_simple
+cargo run --example sign_nep_366_delegate_action_simple  -- --speculos-test-generate
 ```
 <!-- TODO #C: add sign_nep_366_delegate_action_batch_all_sub_actions_v1 example -->
 

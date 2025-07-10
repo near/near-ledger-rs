@@ -10,7 +10,7 @@ use slipped10::BIP32Path;
 
 use crate::common::display_pub_key;
 
-#[path = "./common/lib.rs"]
+#[path = "../common/lib.rs"]
 mod common;
 
 fn main() -> Result<(), NEARLedgerError> {
