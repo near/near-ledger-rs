@@ -211,6 +211,61 @@ pub fn batch_of_all_types_of_actions_v1(
     ]
 }
 
+pub fn batch_of_all_types_of_actions_v2(
+    ledger_pub_key: ed25519_dalek::VerifyingKey,
+) -> Vec<near_primitives::transaction::Action> {
+    let mut v1_vector = batch_of_all_types_of_actions_v1(ledger_pub_key.clone());
+    let deploy_global_as_hash = {
+        let code = core::iter::repeat(42u8).take(3000).collect::<Vec<_>>();
+        near_primitives::transaction::Action::DeployGlobalContract(
+            near_primitives::action::DeployGlobalContractAction {
+                code: std::sync::Arc::from(code),
+                deploy_mode: near_primitives::action::GlobalContractDeployMode::CodeHash,
+            },
+        )
+    };
+    let deploy_global_as_acc = {
+        let code = core::iter::repeat(42u8).take(3000).collect::<Vec<_>>();
+        near_primitives::transaction::Action::DeployGlobalContract(
+            near_primitives::action::DeployGlobalContractAction {
+                code: std::sync::Arc::from(code),
+                deploy_mode: near_primitives::action::GlobalContractDeployMode::AccountId,
+            },
+        )
+    };
+    let use_global_by_hash = {
+        let referenced_contract_hash = "5KaX9FM9NtjpfahksL8TMWQk3LF7k8Sv88Qem4tGrVDW"
+            .parse::<CryptoHash>()
+            .unwrap();
+        near_primitives::transaction::Action::UseGlobalContract(Box::new(
+            near_primitives::action::UseGlobalContractAction {
+                contract_identifier: near_primitives::action::GlobalContractIdentifier::CodeHash(
+                    referenced_contract_hash,
+                ),
+            },
+        ))
+    };
+    let use_global_by_acc = {
+        let referenced_account_id =
+            near_primitives::types::AccountId::from_str("simple-package-verify-rs-ci.testnet")
+                .unwrap();
+        near_primitives::transaction::Action::UseGlobalContract(Box::new(
+            near_primitives::action::UseGlobalContractAction {
+                contract_identifier: near_primitives::action::GlobalContractIdentifier::AccountId(
+                    referenced_account_id,
+                ),
+            },
+        ))
+    };
+    v1_vector.extend([
+        deploy_global_as_hash,
+        deploy_global_as_acc,
+        use_global_by_hash,
+        use_global_by_acc,
+    ]);
+    v1_vector
+}
+
 pub fn serialize_and_display_tx(transaction: near_primitives::transaction::Transaction) -> Vec<u8> {
     log::info!("---");
     log::info!("Transaction:");
