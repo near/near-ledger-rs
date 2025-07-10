@@ -10,6 +10,8 @@ use slipped10::BIP32Path;
 
 use crate::common::display_pub_key;
 
+// TODO #A: use common helper for delegate action flow, check that signature isn't changed
+
 #[path = "../common/lib.rs"]
 mod common;
 

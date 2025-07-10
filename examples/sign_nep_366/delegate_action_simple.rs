@@ -13,6 +13,9 @@ use crate::common::display_pub_key;
 #[path = "../common/lib.rs"]
 mod common;
 
+// TODO #A0: extract common code for delegate action flow into ../common/lib.rs, make it an actions vec param, and expected speculos signature param
+// TODO #A1: run, check that signature isn't changed
+
 fn main() -> Result<(), NEARLedgerError> {
     env_logger::builder().init();
     let args = ExampleArgs::parse();
