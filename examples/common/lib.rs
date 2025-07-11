@@ -59,7 +59,6 @@ pub fn get_static_ed25519_key() -> near_crypto::PublicKey {
 
 #[allow(deprecated)]
 pub fn batch_of_all_types_of_actions_v1(
-    ledger_pub_key: ed25519_dalek::VerifyingKey,
 ) -> Vec<near_primitives::transaction::Action> {
     let create_account = near_primitives::transaction::Action::CreateAccount(
         near_primitives::transaction::CreateAccountAction {},
@@ -214,7 +213,7 @@ pub fn batch_of_all_types_of_actions_v1(
 pub fn batch_of_all_types_of_actions_v2(
     ledger_pub_key: ed25519_dalek::VerifyingKey,
 ) -> Vec<near_primitives::transaction::Action> {
-    let mut v1_vector = batch_of_all_types_of_actions_v1(ledger_pub_key.clone());
+    let mut v1_vector = batch_of_all_types_of_actions_v1();
     let deploy_global_as_hash = {
         let code = core::iter::repeat(42u8).take(3000).collect::<Vec<_>>();
         near_primitives::transaction::Action::DeployGlobalContract(

@@ -5,7 +5,7 @@ mod common;
 
 fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transaction::Transaction {
     let mut tx = common::tx_template(ledger_pub_key);
-    tx.actions = common::batch_of_all_types_of_actions_v1(ledger_pub_key);
+    tx.actions = common::batch_of_all_types_of_actions_v1();
     near_primitives::transaction::Transaction::V0(tx)
 }
 
