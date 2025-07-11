@@ -61,7 +61,7 @@ fn main() -> Result<(), NEARLedgerError> {
 
     let hd_path = BIP32Path::from_str("44'/397'/0'/0'/1'").unwrap();
     let ledger_pub_key = if let Some(ref static_test_case) = maybe_static_test_case {
-        static_test_case.public_key.clone()
+        static_test_case.public_key
     } else {
         near_ledger::get_public_key_with_display_flag(hd_path.clone(), false)?
     };

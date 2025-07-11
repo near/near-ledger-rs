@@ -13,7 +13,7 @@ use near_primitives::transaction::{DeployContractAction, FunctionCallAction};
 pub fn display_pub_key(public_key: ed25519_dalek::VerifyingKey) {
     log::info!("---");
     log::info!("Public key:");
-    log::info!("{:?}", public_key);
+    log::info!("{public_key:?}");
     log::info!("{:<10} : {}", "hex", hex::encode(public_key));
     log::info!(
         "{:<10} : {}",
@@ -146,10 +146,10 @@ pub fn batch_of_all_types_of_actions_v1() -> Vec<near_primitives::transaction::A
     );
 
     let deploy_contract = {
-        let code = core::iter::repeat(42u8).take(30).collect::<Vec<_>>();
+        let code = std::iter::repeat_n(42u8, 30).collect::<Vec<_>>();
 
         let code_hash = CryptoHash::hash_bytes(&code);
-        log::info!("Contract code hash: {:?}", code_hash);
+        log::info!("Contract code hash: {code_hash:?}");
         near_primitives::transaction::Action::DeployContract(DeployContractAction { code })
     };
 
@@ -212,7 +212,7 @@ pub fn batch_of_all_types_of_actions_v1() -> Vec<near_primitives::transaction::A
 pub fn batch_of_all_types_of_actions_v2() -> Vec<near_primitives::transaction::Action> {
     let mut v1_vector = batch_of_all_types_of_actions_v1();
     let deploy_global_as_hash = {
-        let code = core::iter::repeat(42u8).take(3000).collect::<Vec<_>>();
+        let code = std::iter::repeat_n(42u8, 3000).collect::<Vec<_>>();
         near_primitives::transaction::Action::DeployGlobalContract(
             near_primitives::action::DeployGlobalContractAction {
                 code: std::sync::Arc::from(code),
@@ -221,7 +221,7 @@ pub fn batch_of_all_types_of_actions_v2() -> Vec<near_primitives::transaction::A
         )
     };
     let deploy_global_as_acc = {
-        let code = core::iter::repeat(42u8).take(3000).collect::<Vec<_>>();
+        let code = std::iter::repeat_n(42u8, 3000).collect::<Vec<_>>();
         near_primitives::transaction::Action::DeployGlobalContract(
             near_primitives::action::DeployGlobalContractAction {
                 code: std::sync::Arc::from(code),
@@ -265,7 +265,7 @@ pub fn batch_of_all_types_of_actions_v2() -> Vec<near_primitives::transaction::A
 pub fn serialize_and_display_tx(transaction: near_primitives::transaction::Transaction) -> Vec<u8> {
     log::info!("---");
     log::info!("Transaction:");
-    log::info!("{:#?}", transaction);
+    log::info!("{transaction:#?}");
     let bytes =
         borsh::to_vec(&transaction).expect("Transaction is not expected to fail on serialization");
     log::info!("transaction byte array length: {}", bytes.len());
@@ -335,7 +335,7 @@ where
     let hd_path = BIP32Path::from_str("44'/397'/0'/0'/1'").unwrap();
 
     let ledger_pub_key = if let Some(ref static_test_case) = maybe_static_test_case {
-        static_test_case.public_key.clone()
+        static_test_case.public_key
     } else {
         near_ledger::get_public_key_with_display_flag(hd_path.clone(), false)?
     };
@@ -379,7 +379,7 @@ pub fn get_key_sign_nep_366_and_verify_flow_with_cli_parse(
 
     let hd_path = BIP32Path::from_str("44'/397'/0'/0'/1'").unwrap();
     let ledger_pub_key = if let Some(ref static_test_case) = maybe_static_test_case {
-        static_test_case.public_key.clone()
+        static_test_case.public_key
     } else {
         near_ledger::get_public_key_with_display_flag(hd_path.clone(), false)?
     };
@@ -424,7 +424,7 @@ pub fn get_key_sign_nep_366_and_verify_flow_with_cli_parse(
         delegate_action,
         signature: signature.clone(),
     };
-    log::info!("{:#?}", signed_delegate);
+    log::info!("{signed_delegate:#?}");
     assert!(signed_delegate.verify());
 
     display_signature(signature_bytes);

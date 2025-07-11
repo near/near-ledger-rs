@@ -5,6 +5,6 @@ fn main() -> Result<(), NEARLedgerError> {
 
     let version = get_version()?;
 
-    log::info!("{:#?}", version);
+    log::info!("{version:#?}");
     Ok(())
 }

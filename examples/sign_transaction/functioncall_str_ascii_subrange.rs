@@ -24,7 +24,7 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
         deposit: 150000000000000000000000, // 0.15 NEAR,
     };
 
-    println!("{:?}", args);
+    println!("{args:?}");
 
     tx.actions = vec![near_primitives::transaction::Action::FunctionCall(
         Box::new(f_call),

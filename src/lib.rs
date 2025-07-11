@@ -80,7 +80,7 @@ fn log_command(index: usize, is_last_chunk: bool, command: &APDUCommand<Vec<u8>>
         if is_last_chunk {
             " (last)".to_string()
         } else {
-            format!(" ({})", index)
+            format!(" ({index})")
         },
         hex::encode(command.serialize())
     );
@@ -121,7 +121,7 @@ pub fn get_version() -> Result<NEARLedgerAppVersion, NEARLedgerError> {
             } else {
                 let retcode = response.retcode();
 
-                let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
+                let error_string = format!("Ledger APDU retcode: 0x{retcode:X}");
                 Err(NEARLedgerError::APDUExchangeError(error_string))
             }
         }
@@ -170,7 +170,7 @@ fn running_app_name() -> Result<String, NEARLedgerError> {
                         .to_string(),
                 )),
                 retcode => {
-                    let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
+                    let error_string = format!("Ledger APDU retcode: 0x{retcode:X}");
                     Err(NEARLedgerError::APDUExchangeError(error_string))
                 }
             }
@@ -206,7 +206,7 @@ fn quit_open_application() -> Result<(), NEARLedgerError> {
             match response.retcode() {
                 RETURN_CODE_OK => Ok(()),
                 retcode => {
-                    let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
+                    let error_string = format!("Ledger APDU retcode: 0x{retcode:X}");
                     Err(NEARLedgerError::APDUExchangeError(error_string))
                 }
             }
@@ -262,7 +262,7 @@ pub fn open_near_application() -> Result<(), NEARLedgerError> {
                     "User declined to open the NEAR app".to_string(),
                 )),
                 retcode => {
-                    let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
+                    let error_string = format!("Ledger APDU retcode: 0x{retcode:X}");
                     Err(NEARLedgerError::APDUExchangeError(error_string))
                 }
             }
@@ -408,7 +408,7 @@ fn handle_public_key_response(
     } else {
         let retcode = response.retcode();
 
-        let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
+        let error_string = format!("Ledger APDU retcode: 0x{retcode:X}");
         Err(NEARLedgerError::APDUExchangeError(error_string))
     }
 }
@@ -543,7 +543,7 @@ fn send_payload_apdus(
                 } else {
                     let retcode = response.retcode();
 
-                    let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
+                    let error_string = format!("Ledger APDU retcode: 0x{retcode:X}");
                     return Err(NEARLedgerError::APDUExchangeError(error_string));
                 }
             }

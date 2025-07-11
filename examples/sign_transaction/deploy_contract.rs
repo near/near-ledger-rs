@@ -8,10 +8,10 @@ mod common;
 fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transaction::Transaction {
     let mut tx = common::tx_template(ledger_pub_key);
 
-    let code = core::iter::repeat(42u8).take(3000).collect::<Vec<_>>();
+    let code = std::iter::repeat_n(42u8, 3000).collect::<Vec<_>>();
 
     let code_hash = CryptoHash::hash_bytes(&code);
-    log::info!("Contract code hash: {:?}", code_hash);
+    log::info!("Contract code hash: {code_hash:?}");
     let action =
         near_primitives::transaction::Action::DeployContract(DeployContractAction { code });
     log::warn!(

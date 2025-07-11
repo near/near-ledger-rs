@@ -14,13 +14,13 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
 
     for i in 0..100 {
         let (char, bytes) = utf_mutibyte_chars[i % 3];
-        str.push_str(&format!("{}", bytes));
+        str.push_str(&format!("{bytes}"));
         str.push(char);
     }
 
-    let args = format!("{{\"test_utf8_key\": \"{}\"}}", str);
+    let args = format!("{{\"test_utf8_key\": \"{str}\"}}");
 
-    println!("args: {}", args);
+    println!("args: {args}");
     println!("args.len() {}", args.len());
 
     let f_call = FunctionCallAction {
@@ -30,7 +30,7 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
         deposit: 150000000000000000000000, // 0.15 NEAR,
     };
 
-    println!("{:?}", args);
+    println!("{args:?}");
 
     tx.actions = vec![near_primitives::transaction::Action::FunctionCall(
         Box::new(f_call),
