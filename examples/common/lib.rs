@@ -58,8 +58,7 @@ pub fn get_static_ed25519_key() -> near_crypto::PublicKey {
 }
 
 #[allow(deprecated)]
-pub fn batch_of_all_types_of_actions_v1(
-) -> Vec<near_primitives::transaction::Action> {
+pub fn batch_of_all_types_of_actions_v1() -> Vec<near_primitives::transaction::Action> {
     let create_account = near_primitives::transaction::Action::CreateAccount(
         near_primitives::transaction::CreateAccountAction {},
     );
@@ -210,9 +209,7 @@ pub fn batch_of_all_types_of_actions_v1(
     ]
 }
 
-pub fn batch_of_all_types_of_actions_v2(
-    ledger_pub_key: ed25519_dalek::VerifyingKey,
-) -> Vec<near_primitives::transaction::Action> {
+pub fn batch_of_all_types_of_actions_v2() -> Vec<near_primitives::transaction::Action> {
     let mut v1_vector = batch_of_all_types_of_actions_v1();
     let deploy_global_as_hash = {
         let code = core::iter::repeat(42u8).take(3000).collect::<Vec<_>>();
@@ -418,7 +415,8 @@ pub fn get_key_sign_nep_366_and_verify_flow_with_cli_parse(
         let signature_bytes = near_ledger::sign_message_nep366_delegate_action(&bytes, hd_path)?;
 
         let signature =
-            near_crypto::Signature::from_parts(near_crypto::KeyType::ED25519, &signature_bytes).unwrap();
+            near_crypto::Signature::from_parts(near_crypto::KeyType::ED25519, &signature_bytes)
+                .unwrap();
         (signature, signature_bytes)
     };
 

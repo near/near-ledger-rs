@@ -175,10 +175,11 @@ cargo run --example sign_nep_413_message  -- --speculos-test-generate
 export RUST_LOG=near_ledger=info
 cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v1
 cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v1  -- --speculos-test-generate
+cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v2
+cargo run --example sign_nep_366_delegate_action_batch_all_sub_actions_v2  -- --speculos-test-generate
 cargo run --example sign_nep_366_delegate_action_simple
 cargo run --example sign_nep_366_delegate_action_simple  -- --speculos-test-generate
 ```
-<!-- TODO #C: add sign_nep_366_delegate_action_batch_all_sub_actions_v1 example -->
 
 ### Open near app
 
