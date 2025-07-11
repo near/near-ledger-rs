@@ -8,7 +8,8 @@ mod common;
 fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transaction::Transaction {
     let mut tx = common::tx_template(ledger_pub_key);
 
-    let referenced_account_id = near_primitives::types::AccountId::from_str("simple-package-verify-rs-ci.testnet").unwrap();
+    let referenced_account_id =
+        near_primitives::types::AccountId::from_str("simple-package-verify-rs-ci.testnet").unwrap();
     log::warn!(
         "byte array of referenced_account_id: {:x?}",
         borsh::to_vec(&referenced_account_id).expect("no ser err")

@@ -12,10 +12,12 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
 
     let code_hash = CryptoHash::hash_bytes(&code);
     log::info!("Contract code hash: {:?}", code_hash);
-    let action = near_primitives::transaction::Action::DeployContract(
-        DeployContractAction { code },
+    let action =
+        near_primitives::transaction::Action::DeployContract(DeployContractAction { code });
+    log::warn!(
+        "action bytes: {:x?}",
+        borsh::to_vec(&action).expect("no ser err")
     );
-    log::warn!("action bytes: {:x?}", borsh::to_vec(&action).expect("no ser err"));
     tx.actions = vec![action];
     near_primitives::transaction::Transaction::V0(tx)
 }

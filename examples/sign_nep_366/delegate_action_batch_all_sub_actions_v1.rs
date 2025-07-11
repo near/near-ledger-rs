@@ -1,4 +1,4 @@
-use std::{convert::TryInto};
+use std::convert::TryInto;
 
 use near_ledger::NEARLedgerError;
 
@@ -11,7 +11,9 @@ fn main() -> Result<(), NEARLedgerError> {
         .into_iter()
         .map(|action| action.try_into().unwrap())
         .collect::<Vec<_>>();
-    
-    common::get_key_sign_nep_366_and_verify_flow_with_cli_parse(actions, result_signature_from_speculos_test)
-}
 
+    common::get_key_sign_nep_366_and_verify_flow_with_cli_parse(
+        actions,
+        result_signature_from_speculos_test,
+    )
+}
