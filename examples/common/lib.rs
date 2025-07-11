@@ -365,6 +365,75 @@ where
     Ok(())
 }
 
+pub fn get_key_sign_nep_366_and_verify_flow_with_cli_parse(
+    actions: Vec<near_primitives::action::delegate::NonDelegateAction>,
+    expected_signature_bytes: Vec<u8>,
+) -> Result<(), NEARLedgerError> {
+    env_logger::builder().init();
+    let args = ExampleArgs::parse();
+
+    let maybe_static_test_case = if args.speculos_test_generate {
+        Some(StaticTestCase {
+            public_key: static_speculos_public_key(),
+            expected_signature_bytes,
+        })
+    } else {
+        None
+    };
+
+    let hd_path = BIP32Path::from_str("44'/397'/0'/0'/1'").unwrap();
+    let ledger_pub_key = if let Some(ref static_test_case) = maybe_static_test_case {
+        static_test_case.public_key.clone()
+    } else {
+        near_ledger::get_public_key_with_display_flag(hd_path.clone(), false)?
+    };
+    display_pub_key(ledger_pub_key);
+
+    let sender_id = AccountId::from_str("bob.near").unwrap();
+
+    let ledger_pub_key = near_crypto::PublicKey::ED25519(near_crypto::ED25519PublicKey::from(
+        ledger_pub_key.to_bytes(),
+    ));
+
+    let delegate_action = near_primitives::action::delegate::DelegateAction {
+        sender_id,
+        receiver_id: AccountId::from_str("alice.near").unwrap(),
+        actions,
+        nonce: 127127122121,
+        max_block_height: 100500,
+        public_key: ledger_pub_key,
+    };
+
+    let bytes = borsh::to_vec(&delegate_action)
+        .expect("Delegate action is not expected to fail on serialization");
+
+    let (signature, signature_bytes) = if let Some(ref static_test_case) = maybe_static_test_case {
+        near_ledger::print_apdus::nep366_delegate_action(&bytes, hd_path);
+        let signature = near_crypto::Signature::from_parts(
+            near_crypto::KeyType::ED25519,
+            &static_test_case.expected_signature_bytes,
+        )
+        .unwrap();
+        (signature, static_test_case.expected_signature_bytes.clone())
+    } else {
+        let signature_bytes = near_ledger::sign_message_nep366_delegate_action(&bytes, hd_path)?;
+
+        let signature =
+            near_crypto::Signature::from_parts(near_crypto::KeyType::ED25519, &signature_bytes).unwrap();
+        (signature, signature_bytes)
+    };
+
+    let signed_delegate = near_primitives::action::delegate::SignedDelegateAction {
+        delegate_action,
+        signature: signature.clone(),
+    };
+    log::info!("{:#?}", signed_delegate);
+    assert!(signed_delegate.verify());
+
+    display_signature(signature_bytes);
+    Ok(())
+}
+
 pub struct StaticTestCase {
     pub public_key: ed25519_dalek::VerifyingKey,
     pub expected_signature_bytes: Vec<u8>,
