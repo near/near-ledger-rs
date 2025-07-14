@@ -10,7 +10,7 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
     let code = std::iter::repeat_n(42u8, 3000).collect::<Vec<_>>();
 
     let code_hash = CryptoHash::hash_bytes(&code);
-    log::info!("Contract code hash: {code_hash:?}");
+    log::warn!("Contract code hash: {code_hash:?}");
     let action = near_primitives::transaction::Action::DeployGlobalContract(
         near_primitives::action::DeployGlobalContractAction {
             code: std::sync::Arc::from(code),
