@@ -149,7 +149,7 @@ pub fn batch_of_all_types_of_actions_v1() -> Vec<near_primitives::transaction::A
         let code = std::iter::repeat_n(42u8, 30).collect::<Vec<_>>();
 
         let code_hash = CryptoHash::hash_bytes(&code);
-        log::info!("Contract code hash: {code_hash:?}");
+        log::info!("Contract code hash of deploy_contract action: {code_hash:?}");
         near_primitives::transaction::Action::DeployContract(DeployContractAction { code })
     };
 
@@ -212,7 +212,7 @@ pub fn batch_of_all_types_of_actions_v1() -> Vec<near_primitives::transaction::A
 pub fn batch_of_all_types_of_actions_v2() -> Vec<near_primitives::transaction::Action> {
     let mut v1_vector = batch_of_all_types_of_actions_v1();
     let deploy_global_as_hash = {
-        let code = std::iter::repeat_n(42u8, 3000).collect::<Vec<_>>();
+        let code = std::iter::repeat_n(42u8, 30).collect::<Vec<_>>();
         near_primitives::transaction::Action::DeployGlobalContract(
             near_primitives::action::DeployGlobalContractAction {
                 code: std::sync::Arc::from(code),
@@ -221,7 +221,7 @@ pub fn batch_of_all_types_of_actions_v2() -> Vec<near_primitives::transaction::A
         )
     };
     let deploy_global_as_acc = {
-        let code = std::iter::repeat_n(42u8, 3000).collect::<Vec<_>>();
+        let code = std::iter::repeat_n(42u8, 30).collect::<Vec<_>>();
         near_primitives::transaction::Action::DeployGlobalContract(
             near_primitives::action::DeployGlobalContractAction {
                 code: std::sync::Arc::from(code),
