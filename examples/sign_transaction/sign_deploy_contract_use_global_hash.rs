@@ -11,10 +11,7 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
         .parse::<CryptoHash>()
         .unwrap();
 
-    log::warn!(
-        "byte array of referenced_contract_hash: {:x?}",
-        borsh::to_vec(&referenced_contract_hash).expect("no ser err")
-    );
+    log::warn!("referenced_contract_hash: {}", referenced_contract_hash);
     let action = near_primitives::transaction::Action::UseGlobalContract(Box::new(
         near_primitives::action::UseGlobalContractAction {
             contract_identifier: near_primitives::action::GlobalContractIdentifier::CodeHash(

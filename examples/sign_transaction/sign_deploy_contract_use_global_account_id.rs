@@ -10,10 +10,7 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
 
     let referenced_account_id =
         near_primitives::types::AccountId::from_str("simple-package-verify-rs-ci.testnet").unwrap();
-    log::warn!(
-        "byte array of referenced_account_id: {:x?}",
-        borsh::to_vec(&referenced_account_id).expect("no ser err")
-    );
+    log::warn!("referenced_account_id: {}", referenced_account_id);
     let action = near_primitives::transaction::Action::UseGlobalContract(Box::new(
         near_primitives::action::UseGlobalContractAction {
             contract_identifier: near_primitives::action::GlobalContractIdentifier::AccountId(
