@@ -1,5 +1,4 @@
 use near_ledger::NEARLedgerError;
-use near_primitives_core::hash::CryptoHash;
 
 #[path = "../common/lib.rs"]
 mod common;
@@ -17,18 +16,12 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
             deploy_mode: near_primitives::action::GlobalContractDeployMode::CodeHash,
         },
     );
-    log::warn!(
-        "action bytes: {:x?}",
-        borsh::to_vec(&action).expect("no ser err")
-    );
     tx.actions = vec![action];
     near_primitives::transaction::Transaction::V0(tx)
 }
 
 fn main() -> Result<(), NEARLedgerError> {
-    // TODO #F: replace with actual signature from test after test passes and stops
-    // resulting in `TxParsingFail = 0xB005`
-    let result_signature_from_speculos_test = hex::decode("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap();
+    let result_signature_from_speculos_test = hex::decode("bf0108037f14e7f9284f566408f4ca345ed9adc297ed603a0297db9008dc0549a40d2448f1e2ce164c94fcc8a2db974174672bbe3b4fecd1e396665c97f25d03").unwrap();
 
     common::get_key_sign_and_verify_flow_with_cli_parse(tx, result_signature_from_speculos_test)
 }
