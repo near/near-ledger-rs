@@ -1,4 +1,5 @@
 use near_ledger::NEARLedgerError;
+use near_primitives::hash::CryptoHash;
 
 #[path = "../common/lib.rs"]
 mod common;
