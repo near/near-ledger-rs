@@ -28,9 +28,7 @@ fn tx(ledger_pub_key: ed25519_dalek::VerifyingKey) -> near_primitives::transacti
 }
 
 fn main() -> Result<(), NEARLedgerError> {
-    // TODO #F: replace with actual signature from test after test passes and stops
-    // resulting in `TxParsingFail = 0xB005`
-    let result_signature_from_speculos_test = hex::decode("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000").unwrap();
+    let result_signature_from_speculos_test = hex::decode("4bd819a0bfa5b49324bf2dae0dfeb8b135a7973682acd01a830e3a550a6ef6c1b51896f7c6101c5cc3efcd3832e4c994cc90377eee69862a6a786b081673da01").unwrap();
 
     common::get_key_sign_and_verify_flow_with_cli_parse(tx, result_signature_from_speculos_test)
 }
