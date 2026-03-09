@@ -185,7 +185,7 @@ impl TryFrom<Vec<u8>> for InitialPacket {
 #[derive(Debug)]
 struct SubsequentPacket {
     command_tag: u8,
-    _packet_sequence_index: u16,
+    packet_sequence_index: u16,
     payload: Vec<u8>,
 }
 
@@ -193,7 +193,7 @@ impl SubsequentPacket {
     fn serialize(self) -> Vec<u8> {
         let mut buf = Vec::with_capacity(self.payload.len() + 3);
         buf.write_u8(self.command_tag).unwrap();
-        buf.write_u16::<BigEndian>(self._packet_sequence_index)
+        buf.write_u16::<BigEndian>(self.packet_sequence_index)
             .unwrap();
         buf.extend(self.payload);
         buf
@@ -214,7 +214,7 @@ impl TryFrom<Vec<u8>> for SubsequentPacket {
         };
         Ok(SubsequentPacket {
             command_tag: value[0],
-            _packet_sequence_index: u16::from_be_bytes([value[1], value[2]]),
+            packet_sequence_index: u16::from_be_bytes([value[1], value[2]]),
             payload,
         })
     }
@@ -424,7 +424,7 @@ impl TransportBle {
             let end = std::cmp::min(offset + subsequent_chunk_data_size, payload.len());
             let packet = SubsequentPacket {
                 command_tag,
-                _packet_sequence_index: seq_index,
+                packet_sequence_index: seq_index,
                 payload: payload[offset..end].to_vec(),
             };
             self.write(&packet.serialize()).await?;
@@ -471,7 +471,7 @@ impl TransportBle {
             }
             log::info!(
                 "BLE recv subsequent: seq={} payload_len={}",
-                packet._packet_sequence_index,
+                packet.packet_sequence_index,
                 packet.payload.len()
             );
             buffer.extend(packet.payload);
