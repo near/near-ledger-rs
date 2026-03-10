@@ -16,35 +16,86 @@ use ledger_transport_hid::{
 
 pub mod print_apdus;
 
-const CLA: u8 = 0x80; // Instruction class
-const INS_GET_PUBLIC_KEY: u8 = 4; // Instruction code to get public key
-const INS_GET_WALLET_ID: u8 = 0x05; // Get Wallet ID
-const INS_GET_VERSION: u8 = 6; // Instruction code to get app version from the Ledger
-const INS_SIGN_TRANSACTION: u8 = 2; // Instruction code to sign a transaction on the Ledger
-const INS_SIGN_NEP413_MESSAGE: u8 = 7; // Instruction code to sign a nep-413 message with Ledger
-const INS_SIGN_NEP366_DELEGATE_ACTION: u8 = 8; // Instruction code to sign a nep-413 message with Ledger
-const NETWORK_ID: u8 = b'W'; // Instruction parameter 2
-const RETURN_CODE_OK: u16 = 0x9000; // APDUAnswer.retcode which means success from Ledger
-const CHUNK_SIZE: usize = 250; // Chunk size to be sent to Ledger
+#[cfg(feature = "ble")]
+mod ble;
+#[cfg(feature = "ble")]
+mod ble_api;
 
-const RETURN_CODE_APP_MISSING: u16 = 0x6807;
-const RETURN_CODE_ERROR_INPUT: u16 = 0x670A;
-const RETURN_CODE_UNKNOWN_ERROR: u16 = 0x5515;
+#[cfg(feature = "ble")]
+pub use ble::{BleError, TransportBle};
+
+#[cfg(feature = "ble")]
+pub use ble_api::{
+    get_public_key_ble, get_public_key_with_display_flag_ble, get_version_ble, get_wallet_id_ble,
+    open_near_application_ble, sign_message_nep366_delegate_action_ble, sign_message_nep413_ble,
+    sign_transaction_ble,
+};
+
+pub(crate) const CLA: u8 = 0x80; // Instruction class
+pub(crate) const INS_GET_PUBLIC_KEY: u8 = 4; // Instruction code to get public key
+pub(crate) const INS_GET_WALLET_ID: u8 = 0x05; // Get Wallet ID
+pub(crate) const INS_GET_VERSION: u8 = 6; // Instruction code to get app version from the Ledger
+pub(crate) const INS_SIGN_TRANSACTION: u8 = 2; // Instruction code to sign a transaction on the Ledger
+pub(crate) const INS_SIGN_NEP413_MESSAGE: u8 = 7; // Instruction code to sign a nep-413 message with Ledger
+pub(crate) const INS_SIGN_NEP366_DELEGATE_ACTION: u8 = 8; // Instruction code to sign a nep-413 message with Ledger
+pub(crate) const NETWORK_ID: u8 = b'W'; // Instruction parameter 2
+pub(crate) const RETURN_CODE_OK: u16 = 0x9000; // APDUAnswer.retcode which means success from Ledger
+pub(crate) const CHUNK_SIZE: usize = 250; // Chunk size to be sent to Ledger
+
+// Dashboard APDU constants (BOLOS / device-level commands)
+pub(crate) const CLA_DASHBOARD: u8 = 0xB0;
+pub(crate) const INS_GET_APP_NAME: u8 = 0x01;
+pub(crate) const INS_QUIT_APP: u8 = 0xA7;
+pub(crate) const CLA_OPEN_APP: u8 = 0xE0;
+pub(crate) const INS_OPEN_APP: u8 = 0xD8;
+
+pub(crate) const RETURN_CODE_APP_MISSING: u16 = 0x6807;
+pub(crate) const RETURN_CODE_ERROR_INPUT: u16 = 0x670A;
+pub(crate) const RETURN_CODE_UNKNOWN_ERROR: u16 = 0x5515;
 
 /// This error code is returned when the user declines to open the app.
 /// But I couldn't find it in the any of the ledger documentation...
-const RETURN_CODE_DECLINE: u16 = 0x5501;
+pub(crate) const RETURN_CODE_DECLINE: u16 = 0x5501;
+
+/// ISO 7816 "CLA not supported" — typically means the NEAR app is not open
+pub(crate) const RETURN_CODE_CLA_NOT_SUPPORTED: u16 = 0x6E01;
+/// ISO 7816 "INS not supported"
+pub(crate) const RETURN_CODE_INS_NOT_SUPPORTED: u16 = 0x6D00;
+
+/// Map a Ledger APDU return code to a human-readable error string.
+pub(crate) fn retcode_to_error_string(retcode: u16) -> String {
+    match retcode {
+        RETURN_CODE_OK => "Success".to_string(),
+        RETURN_CODE_CLA_NOT_SUPPORTED => {
+            "NEAR app is not open on the Ledger device (CLA not supported, 0x6E01)".to_string()
+        }
+        RETURN_CODE_INS_NOT_SUPPORTED => {
+            "Instruction not supported by the Ledger app (INS not supported, 0x6D00)".to_string()
+        }
+        RETURN_CODE_APP_MISSING => {
+            "NEAR application is missing on the Ledger device (0x6807)".to_string()
+        }
+        RETURN_CODE_ERROR_INPUT => {
+            "Internal error: the input length of bytes is not correct (0x670A)".to_string()
+        }
+        RETURN_CODE_DECLINE => {
+            "User declined the request on the Ledger device (0x5501)".to_string()
+        }
+        RETURN_CODE_UNKNOWN_ERROR => "Unknown error from the Ledger device (0x5515)".to_string(),
+        _ => format!("Ledger APDU retcode: 0x{:X}", retcode),
+    }
+}
 
 /// Alias of `Vec<u8>`. The goal is naming to help understand what the bytes to deal with
 pub type BorshSerializedUnsignedTransaction<'a> = &'a [u8];
 /// Alias of `Vec<u8>`. The goal is naming to help understand what the bytes to deal with
 pub type BorshSerializedDelegateAction<'a> = &'a [u8];
 
-const P1_GET_PUB_DISPLAY: u8 = 0;
-const P1_GET_PUB_SILENT: u8 = 1;
+pub(crate) const P1_GET_PUB_DISPLAY: u8 = 0;
+pub(crate) const P1_GET_PUB_SILENT: u8 = 1;
 
-const P1_SIGN_NORMAL: u8 = 0;
-const P1_SIGN_NORMAL_LAST_CHUNK: u8 = 0x80;
+pub(crate) const P1_SIGN_NORMAL: u8 = 0;
+pub(crate) const P1_SIGN_NORMAL_LAST_CHUNK: u8 = 0x80;
 
 /// Alias of `Vec<u8>`. The goal is naming to help understand what the bytes to deal with
 pub type NEARLedgerAppVersion = Vec<u8>;
@@ -61,10 +112,13 @@ pub enum NEARLedgerError {
     APDUExchangeError(String),
     /// Error with transport
     LedgerHIDError(LedgerHIDError),
+    /// Error with BLE transport (only available with `ble` feature)
+    #[cfg(feature = "ble")]
+    BleError(String),
 }
 
 /// Converts BIP32Path into bytes (`Vec<u8>`)
-fn hd_path_to_bytes(hd_path: &slipped10::BIP32Path) -> Vec<u8> {
+pub(crate) fn hd_path_to_bytes(hd_path: &slipped10::BIP32Path) -> Vec<u8> {
     (0..hd_path.depth())
         .flat_map(|index| {
             let value = *hd_path.index(index).unwrap();
@@ -74,7 +128,7 @@ fn hd_path_to_bytes(hd_path: &slipped10::BIP32Path) -> Vec<u8> {
 }
 
 #[inline(always)]
-fn log_command(index: usize, is_last_chunk: bool, command: &APDUCommand<Vec<u8>>) {
+pub(crate) fn log_command(index: usize, is_last_chunk: bool, command: &APDUCommand<Vec<u8>>) {
     log::info!(
         "APDU  in{}: {}",
         if is_last_chunk {
@@ -119,10 +173,9 @@ pub fn get_version() -> Result<NEARLedgerAppVersion, NEARLedgerError> {
             if response.retcode() == RETURN_CODE_OK {
                 Ok(response.data().to_vec())
             } else {
-                let retcode = response.retcode();
-
-                let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
-                Err(NEARLedgerError::APDUExchangeError(error_string))
+                Err(NEARLedgerError::APDUExchangeError(retcode_to_error_string(
+                    response.retcode(),
+                )))
             }
         }
         Err(err) => Err(NEARLedgerError::LedgerHIDError(err)),
@@ -133,8 +186,8 @@ fn running_app_name() -> Result<String, NEARLedgerError> {
     let transport = get_transport()?;
 
     let command = APDUCommand {
-        cla: 0xB0,
-        ins: 0x01,
+        cla: CLA_DASHBOARD,
+        ins: INS_GET_APP_NAME,
         p1: 0,
         p2: 0,
         data: vec![],
@@ -169,10 +222,9 @@ fn running_app_name() -> Result<String, NEARLedgerError> {
                     "The ledger most likely is locked. Please unlock ledger or reconnect it"
                         .to_string(),
                 )),
-                retcode => {
-                    let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
-                    Err(NEARLedgerError::APDUExchangeError(error_string))
-                }
+                retcode => Err(NEARLedgerError::APDUExchangeError(retcode_to_error_string(
+                    retcode,
+                ))),
             }
         }
         Err(err) => Err(NEARLedgerError::LedgerHIDError(err)),
@@ -183,8 +235,8 @@ fn quit_open_application() -> Result<(), NEARLedgerError> {
     let transport = get_transport()?;
 
     let command = APDUCommand {
-        cla: 0xB0,
-        ins: 0xa7,
+        cla: CLA_DASHBOARD,
+        ins: INS_QUIT_APP,
         p1: 0,
         p2: 0,
         data: vec![],
@@ -205,10 +257,9 @@ fn quit_open_application() -> Result<(), NEARLedgerError> {
             // we need to check it based on `response.retcode`
             match response.retcode() {
                 RETURN_CODE_OK => Ok(()),
-                retcode => {
-                    let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
-                    Err(NEARLedgerError::APDUExchangeError(error_string))
-                }
+                retcode => Err(NEARLedgerError::APDUExchangeError(retcode_to_error_string(
+                    retcode,
+                ))),
             }
         }
         Err(err) => Err(NEARLedgerError::LedgerHIDError(err)),
@@ -232,10 +283,10 @@ pub fn open_near_application() -> Result<(), NEARLedgerError> {
     }
 
     let transport = get_transport()?;
-    let data = vec![b'N', b'E', b'A', b'R'];
+    let data = b"NEAR".to_vec();
     let command: APDUCommand<Vec<u8>> = APDUCommand {
-        cla: 0xE0,
-        ins: 0xD8,
+        cla: CLA_OPEN_APP,
+        ins: INS_OPEN_APP,
         p1: 0x00,
         p2: 0x00,
         data,
@@ -252,19 +303,9 @@ pub fn open_near_application() -> Result<(), NEARLedgerError> {
             // we need to check it based on `response.retcode`
             match response.retcode() {
                 RETURN_CODE_OK => Ok(()),
-                RETURN_CODE_APP_MISSING => Err(NEARLedgerError::APDUExchangeError(
-                    "NEAR application is missing on the Ledger device".to_string(),
-                )),
-                RETURN_CODE_ERROR_INPUT => Err(NEARLedgerError::APDUExchangeError(
-                    "Internal error: the input length of bytes is not correct".to_string(),
-                )),
-                RETURN_CODE_DECLINE => Err(NEARLedgerError::APDUExchangeError(
-                    "User declined to open the NEAR app".to_string(),
-                )),
-                retcode => {
-                    let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
-                    Err(NEARLedgerError::APDUExchangeError(error_string))
-                }
+                retcode => Err(NEARLedgerError::APDUExchangeError(retcode_to_error_string(
+                    retcode,
+                ))),
             }
         }
         Err(err) => Err(NEARLedgerError::LedgerHIDError(err)),
@@ -406,10 +447,9 @@ fn handle_public_key_response(
         })?;
         Ok(key)
     } else {
-        let retcode = response.retcode();
-
-        let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
-        Err(NEARLedgerError::APDUExchangeError(error_string))
+        Err(NEARLedgerError::APDUExchangeError(retcode_to_error_string(
+            response.retcode(),
+        )))
     }
 }
 
@@ -541,10 +581,9 @@ fn send_payload_apdus(
                         return Ok(response.data().to_vec());
                     }
                 } else {
-                    let retcode = response.retcode();
-
-                    let error_string = format!("Ledger APDU retcode: 0x{:X}", retcode);
-                    return Err(NEARLedgerError::APDUExchangeError(error_string));
+                    return Err(NEARLedgerError::APDUExchangeError(retcode_to_error_string(
+                        response.retcode(),
+                    )));
                 }
             }
             Err(err) => return Err(NEARLedgerError::LedgerHIDError(err)),

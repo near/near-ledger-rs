@@ -107,6 +107,20 @@ path = "examples/sign_nep_366_delegate_action.rs"
 name = "sign_nep_366_delegate_action_simple"
 path = "examples/sign_nep_366_delegate_action_simple.rs"
 
+[[example]]
+name = "get_version_ble"
+path = "examples/get_version_ble.rs"
+required-features = ["ble"]
+
+[[example]]
+name = "get_public_key_ble"
+path = "examples/get_public_key_ble.rs"
+required-features = ["ble"]
+
+[features]
+default = []
+ble = ["btleplug", "tokio", "futures", "byteorder", "uuid"]
+
 [dependencies]
 ed25519-dalek = { version = "2", default-features = false }
 ledger-transport = "0.11.0"
@@ -116,6 +130,11 @@ slipped10 = { version = "0.4.6" }
 log = "0.4.20"
 hex = "0.4.3"
 borsh = "1.5"
+btleplug = { version = "0.11", optional = true }
+tokio = { version = "1", features = ["macros", "time"], optional = true }
+futures = { version = "0.3", optional = true }
+byteorder = { version = "1.5", optional = true }
+uuid = { version = "1", optional = true }
 
 [dev-dependencies]
 env_logger = "0.11.0"
@@ -124,3 +143,4 @@ near-primitives = ">0.22,<0.31"
 near-primitives-core = ">0.22,<0.31"
 near-account-id = { version = "1.0.0", features = ["internal_unstable"] }
 clap = { version = "4.5.39", features = ["derive"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
