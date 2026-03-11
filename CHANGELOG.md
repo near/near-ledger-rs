@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.2](https://github.com/near/near-ledger-rs/compare/v0.9.1...v0.9.2) - 2026-03-11
+
+### Added
+
+- Added optional BLE suport (under `ble` feature flag) ([#30](https://github.com/near/near-ledger-rs/pull/30))
+
+### Other
+
+- Update GitHub Actions token for release-plz workflow
+
 ## [0.9.1](https://github.com/khorolets/near-ledger-rs/compare/v0.9.0...v0.9.1) - 2025-05-31
 
 ### Added
