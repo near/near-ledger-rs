@@ -8,7 +8,7 @@ use crate::{
 /// this method is counterpart of [`crate::sign_transaction`]
 pub fn transaction(
     unsigned_tx: crate::BorshSerializedUnsignedTransaction,
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
 ) {
     print_payload_apdus(
         unsigned_tx,
@@ -18,7 +18,7 @@ pub fn transaction(
 }
 
 /// this method is counterpart of [`crate::sign_message_nep413`]
-pub fn message_nep413(payload: &crate::NEP413Payload, seed_phrase_hd_path: slipped10::BIP32Path) {
+pub fn message_nep413(payload: &crate::NEP413Payload, seed_phrase_hd_path: near_slip10::BIP32Path) {
     print_payload_apdus(
         &borsh::to_vec(payload).unwrap(),
         seed_phrase_hd_path,
@@ -29,7 +29,7 @@ pub fn message_nep413(payload: &crate::NEP413Payload, seed_phrase_hd_path: slipp
 /// this method is counterpart of [`crate::sign_message_nep366_delegate_action`]
 pub fn nep366_delegate_action(
     payload: crate::BorshSerializedDelegateAction,
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
 ) {
     print_payload_apdus(
         payload,
@@ -43,7 +43,7 @@ pub fn nep366_delegate_action(
 /// over it
 pub(crate) fn print_payload_apdus(
     payload: &[u8],
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
     ins: u8,
 ) {
     // seed_phrase_hd_path must be converted into bytes to be sent as `data` to the Ledger

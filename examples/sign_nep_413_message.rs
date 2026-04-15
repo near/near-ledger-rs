@@ -9,7 +9,7 @@ use ed25519_dalek::Verifier;
 use near_ledger::{NEARLedgerError, NEP413Payload};
 use near_primitives::signable_message::{MessageDiscriminant, SignableMessage};
 use near_primitives_core::{borsh, hash::CryptoHash};
-use slipped10::BIP32Path;
+use near_slip10::BIP32Path;
 
 use crate::common::display_pub_key;
 
