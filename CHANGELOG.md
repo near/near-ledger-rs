@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.4](https://github.com/near/near-ledger-rs/compare/v0.9.3...v0.9.4) - 2026-04-30
+
+### Other
+
+- *(ble)* bumped timeout to 5min ([#34](https://github.com/near/near-ledger-rs/pull/34))
+
 ## [0.9.3](https://github.com/near/near-ledger-rs/compare/v0.9.2...v0.9.3) - 2026-04-15
 
 ### Other
