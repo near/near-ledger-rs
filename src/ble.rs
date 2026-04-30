@@ -84,7 +84,7 @@ const MTU_COMMAND_TAG: u8 = 0x08;
 const APDU_COMMAND_TAG: u8 = 0x05;
 const BLE_SCAN_DURATION_SECS: u64 = 5;
 const DEFAULT_MTU_SIZE: usize = 20;
-const BLE_RESPONSE_TIMEOUT_SECS: u64 = 30;
+const BLE_RESPONSE_TIMEOUT_SECS: u64 = 300;
 
 fn is_ledger_service_uuid(uuid: &Uuid) -> bool {
     LEDGER_SERVICE_UUIDS.contains(uuid)
