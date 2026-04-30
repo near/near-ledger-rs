@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use near_ledger::{get_public_key_ble, open_near_application_ble, NEARLedgerError, TransportBle};
-use slipped10::BIP32Path;
+use near_slip10::BIP32Path;
 
 #[path = "common/lib.rs"]
 mod common;

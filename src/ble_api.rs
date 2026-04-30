@@ -183,7 +183,7 @@ pub async fn open_near_application_ble(transport: &TransportBle) -> Result<(), N
 /// The key will be displayed on the Ledger screen for user confirmation.
 pub async fn get_public_key_ble(
     transport: &TransportBle,
-    hd_path: slipped10::BIP32Path,
+    hd_path: near_slip10::BIP32Path,
 ) -> Result<ed25519_dalek::VerifyingKey, NEARLedgerError> {
     get_public_key_with_display_flag_ble(transport, hd_path, true).await
 }
@@ -191,7 +191,7 @@ pub async fn get_public_key_ble(
 /// Gets PublicKey from a BLE-connected Ledger, optionally displaying on the device screen
 pub async fn get_public_key_with_display_flag_ble(
     transport: &TransportBle,
-    hd_path: slipped10::BIP32Path,
+    hd_path: near_slip10::BIP32Path,
     display_and_confirm: bool,
 ) -> Result<ed25519_dalek::VerifyingKey, NEARLedgerError> {
     let hd_path_bytes = hd_path_to_bytes(&hd_path);
@@ -220,7 +220,7 @@ pub async fn get_public_key_with_display_flag_ble(
 /// Gets the Wallet ID from a BLE-connected Ledger on the given `hd_path`
 pub async fn get_wallet_id_ble(
     transport: &TransportBle,
-    hd_path: slipped10::BIP32Path,
+    hd_path: near_slip10::BIP32Path,
 ) -> Result<ed25519_dalek::VerifyingKey, NEARLedgerError> {
     let hd_path_bytes = hd_path_to_bytes(&hd_path);
 
@@ -280,7 +280,7 @@ fn handle_public_key_response_ble(
 pub async fn sign_transaction_ble(
     transport: &TransportBle,
     unsigned_tx: BorshSerializedUnsignedTransaction<'_>,
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
 ) -> Result<SignatureBytes, NEARLedgerError> {
     send_payload_apdus_ble(
         transport,
@@ -295,7 +295,7 @@ pub async fn sign_transaction_ble(
 pub async fn sign_message_nep413_ble(
     transport: &TransportBle,
     payload: &NEP413Payload,
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
 ) -> Result<SignatureBytes, NEARLedgerError> {
     send_payload_apdus_ble(
         transport,
@@ -310,7 +310,7 @@ pub async fn sign_message_nep413_ble(
 pub async fn sign_message_nep366_delegate_action_ble(
     transport: &TransportBle,
     payload: BorshSerializedDelegateAction<'_>,
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
 ) -> Result<SignatureBytes, NEARLedgerError> {
     send_payload_apdus_ble(
         transport,
@@ -324,7 +324,7 @@ pub async fn sign_message_nep366_delegate_action_ble(
 async fn send_payload_apdus_ble(
     transport: &TransportBle,
     payload: &[u8],
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
     ins: u8,
 ) -> Result<SignatureBytes, NEARLedgerError> {
     let hd_path_bytes = hd_path_to_bytes(&seed_phrase_hd_path);

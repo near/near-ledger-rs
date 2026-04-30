@@ -21,7 +21,7 @@ Provides a set of commands that can be executed to communicate with NEAR App ins
 
 ```rust
 use near_ledger::get_public_key;
-use slipped10::BIP32Path;
+use near_slip10::BIP32Path;
 use std::str::FromStr;
 
 let hd_path = BIP32Path::from_str("44'/397'/0'/0'/1'").unwrap();
@@ -50,7 +50,7 @@ let public_key = near_crypto::PublicKey::ED25519(
 ```rust
 use near_ledger::{sign_transaction, SignTarget};
 use near_primitives::borsh::BorshSerialize;
-use slipped10::BIP32Path;
+use near_slip10::BIP32Path;
 use std::str::FromStr;
 
 let hd_path = BIP32Path::from_str("44'/397'/0'/0'/1'").unwrap();

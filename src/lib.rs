@@ -118,7 +118,7 @@ pub enum NEARLedgerError {
 }
 
 /// Converts BIP32Path into bytes (`Vec<u8>`)
-pub(crate) fn hd_path_to_bytes(hd_path: &slipped10::BIP32Path) -> Vec<u8> {
+pub(crate) fn hd_path_to_bytes(hd_path: &near_slip10::BIP32Path) -> Vec<u8> {
     (0..hd_path.depth())
         .flat_map(|index| {
             let value = *hd_path.index(index).unwrap();
@@ -315,7 +315,7 @@ pub fn open_near_application() -> Result<(), NEARLedgerError> {
 /// Gets PublicKey from the Ledger on the given `hd_path`
 ///
 /// # Inputs
-/// * `hd_path` - seed phrase hd path `slipped10::BIP32Path` for which PublicKey to look
+/// * `hd_path` - seed phrase hd path `near_slip10::BIP32Path` for which PublicKey to look
 ///
 /// # Returns
 ///
@@ -327,7 +327,7 @@ pub fn open_near_application() -> Result<(), NEARLedgerError> {
 ///
 /// ```no_run
 /// use near_ledger::get_public_key;
-/// use slipped10::BIP32Path;
+/// use near_slip10::BIP32Path;
 /// use std::str::FromStr;
 ///
 /// # fn main() {
@@ -351,13 +351,13 @@ pub fn open_near_application() -> Result<(), NEARLedgerError> {
 /// );
 /// ```
 pub fn get_public_key(
-    hd_path: slipped10::BIP32Path,
+    hd_path: near_slip10::BIP32Path,
 ) -> Result<ed25519_dalek::VerifyingKey, NEARLedgerError> {
     get_public_key_with_display_flag(hd_path, true)
 }
 
 pub fn get_public_key_with_display_flag(
-    hd_path: slipped10::BIP32Path,
+    hd_path: near_slip10::BIP32Path,
     display_and_confirm: bool,
 ) -> Result<ed25519_dalek::VerifyingKey, NEARLedgerError> {
     // instantiate the connection to Ledger
@@ -389,7 +389,7 @@ pub fn get_public_key_with_display_flag(
 }
 
 pub fn get_wallet_id(
-    hd_path: slipped10::BIP32Path,
+    hd_path: near_slip10::BIP32Path,
 ) -> Result<ed25519_dalek::VerifyingKey, NEARLedgerError> {
     // instantiate the connection to Ledger
     // will return an error if Ledger is not connected
@@ -465,7 +465,7 @@ fn get_transport() -> Result<TransportNativeHID, NEARLedgerError> {
 /// # Inputs
 /// * `unsigned_transaction_borsh_serializer` - unsigned transaction `near_primitives::transaction::Transaction`
 ///   which is serialized with `BorshSerializer` and basically is just `Vec<u8>`
-/// * `seed_phrase_hd_path` - seed phrase hd path `slipped10::BIP32Path` with which to sign
+/// * `seed_phrase_hd_path` - seed phrase hd path `near_slip10::BIP32Path` with which to sign
 ///
 /// # Returns
 ///
@@ -477,7 +477,7 @@ fn get_transport() -> Result<TransportNativeHID, NEARLedgerError> {
 /// ```no_run
 /// use near_ledger::sign_transaction;
 /// use near_primitives::{borsh, borsh::BorshSerialize};
-/// use slipped10::BIP32Path;
+/// use near_slip10::BIP32Path;
 /// use std::str::FromStr;
 ///
 /// # fn main() {
@@ -500,7 +500,7 @@ fn get_transport() -> Result<TransportNativeHID, NEARLedgerError> {
 /// ```
 pub fn sign_transaction(
     unsigned_tx: BorshSerializedUnsignedTransaction,
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
 ) -> Result<SignatureBytes, NEARLedgerError> {
     send_payload_apdus(unsigned_tx, seed_phrase_hd_path, INS_SIGN_TRANSACTION)
 }
@@ -515,7 +515,7 @@ pub struct NEP413Payload {
 
 pub fn sign_message_nep413(
     payload: &NEP413Payload,
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
 ) -> Result<SignatureBytes, NEARLedgerError> {
     send_payload_apdus(
         &borsh::to_vec(payload).unwrap(),
@@ -526,7 +526,7 @@ pub fn sign_message_nep413(
 
 pub fn sign_message_nep366_delegate_action(
     payload: BorshSerializedDelegateAction,
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
 ) -> Result<SignatureBytes, NEARLedgerError> {
     send_payload_apdus(
         payload,
@@ -539,7 +539,7 @@ pub fn sign_message_nep366_delegate_action(
 /// as avoiding copy-paste results in re-allocating `payload`
 fn send_payload_apdus(
     payload: &[u8],
-    seed_phrase_hd_path: slipped10::BIP32Path,
+    seed_phrase_hd_path: near_slip10::BIP32Path,
     ins: u8,
 ) -> Result<SignatureBytes, NEARLedgerError> {
     let transport = get_transport()?;

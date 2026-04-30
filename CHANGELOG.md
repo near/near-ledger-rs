@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.3](https://github.com/near/near-ledger-rs/compare/v0.9.2...v0.9.3) - 2026-04-15
+
+### Other
+
+- *(deps)* replace `slipped10` with `near-slip10` ([#32](https://github.com/near/near-ledger-rs/pull/32))
+
 ## [0.9.2](https://github.com/near/near-ledger-rs/compare/v0.9.1...v0.9.2) - 2026-03-11
 
 ### Added

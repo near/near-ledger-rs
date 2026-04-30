@@ -6,7 +6,7 @@ use near_account_id::AccountId;
 use near_crypto::Signature;
 use near_ledger::NEARLedgerError;
 use near_primitives::action::delegate::{DelegateAction, SignedDelegateAction};
-use slipped10::BIP32Path;
+use near_slip10::BIP32Path;
 
 use crate::common::display_pub_key;
 

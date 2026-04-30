@@ -1,6 +1,6 @@
 [package]
 name = "near-ledger"
-version = "0.9.3"
+version = "0.9.4"
 edition = "2018"
 authors = ["Bohdan Khorolets <b@khorolets.com>"]
 description = "Transport library to integrate with NEAR Ledger app"
@@ -126,7 +126,7 @@ ed25519-dalek = { version = "2", default-features = false }
 ledger-transport = "0.11.0"
 ledger-transport-hid = "0.11.0"
 ledger-apdu = "0.11.0"
-slipped10 = { version = "0.4.6" }
+near-slip10 = { version = "0.4.7" }
 log = "0.4.20"
 hex = "0.4.3"
 borsh = "1.5"
